@@ -28,7 +28,11 @@ function draw() {
 
 // Mouse events
 function mousePressed() {
+  console.log(`mouseX: ${mouseX}`);
+  console.log(`blockX: ${block.x}`);
+  console.log(`blockX + blockW: ${block.x + block.w}`);
   if (mouseX > block.x && mouseX < block.x + block.w && mouseY > block.y && mouseY < block.y + block.h) {
+
     isDragging = true;
     offsetX = mouseX - block.x;
     offsetY = mouseY - block.y;
@@ -48,6 +52,7 @@ function mouseReleased() {
 
 // Touch events
 function touchStarted() {
+ 
   if (touches.length > 0 && touches[0].x > block.x && touches[0].x < block.x + block.w && touches[0].y > block.y && touches[0].y < block.y + block.h) {
     isDragging = true;
     offsetX = touches[0].x - block.x;
@@ -65,6 +70,7 @@ function touchMoved() {
 }
 
 function touchEnded() {
+  console.log(touches);
   isDragging = false;
   return false; // Prevent default
 }
