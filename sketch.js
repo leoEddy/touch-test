@@ -1,36 +1,33 @@
-let touchColor;
 function setup() {
   createCanvas(400, 400);
-  touchColor = color(200, 100, 100);
-
+  background(255);
+  textSize(16);
+  textAlign(CENTER, CENTER);
+  fill(0);
+  text("Touch the screen to test", width / 2, height / 2);
 }
 
 function draw() {
-  background(220);
-
-  // Draw instructions
-  textSize(16);
-  fill(0);
-  textAlign(CENTER, CENTER);
-  text("Touch and drag to change color", width/2, 20);
-
-  // Draw a rectangle that chnages color when touched
-  fill(touchColor);
-  noStroke();
-  rectMode(CENTER);
-  rect(width/2, height/2, 150, 150);
+  // We’re not doing anything in draw, this is just for touch testing
 }
 
-// Detects a touch start
-function touchStrated(){
-  touchColor = color(random(255), random(255), random(255));
-  return false; // Prevent default behavior
+function touchStarted() {
+  background(200, 100, 100);
+  fill(255);
+  text("Touch Started", width / 2, height / 2);
+  return false; // Prevents any default behavior
 }
 
-// Detects draginng motion
-function touchMove() {
-  // Move rectangle position based on touch
-  fill(touchColor);
-  rect(mouseX, mouseY, 150, 150);
-  return false; 
+function touchMoved() {
+  background(100, 200, 100);
+  fill(255);
+  text("Touch Moved", width / 2, height / 2);
+  return false;
+}
+
+function touchEnded() {
+  background(100, 100, 200);
+  fill(255);
+  text("Touch Ended", width / 2, height / 2);
+  return false;
 }
