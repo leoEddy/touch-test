@@ -1,77 +1,70 @@
 let block;
-let dragging = false;
-let offsetX, offsetY;
+let isDragging = false; // Track if the block is being dragged
+let offsetX, offsetY;   // To store the offset from the touch/mouse location to the block's origin
 
 function setup() {
   createCanvas(400, 400);
-  block = new Block(150, 150, 100, 60, 5); // Position and size of the block
+  block = { x: width / 2 - 50, y: height / 2 - 50, w: 100, h: 100 }; // A single block in the center
 }
 
 function draw() {
   background(220);
+  
+  // Draw the block
+  fill(150, 200, 250);
+  stroke(0);
+  rect(block.x, block.y, block.w, block.h);
 
-  // Display the block
-  block.show();
+  // Display instructions
+  fill(0);
+  textSize(16);
+  textAlign(CENTER, CENTER);
+  if (isDragging) {
+    text("Dragging...", width / 2, 30);
+  } else {
+    text("Touch or click the block to drag", width / 2, 30);
+  }
 }
 
+// Mouse events
 function mousePressed() {
-  if (block.isHovered(mouseX, mouseY)) {
-    dragging = true;
-    offsetX = block.x - mouseX;
-    offsetY = block.y - mouseY;
+  if (mouseX > block.x && mouseX < block.x + block.w && mouseY > block.y && mouseY < block.y + block.h) {
+    isDragging = true;
+    offsetX = mouseX - block.x;
+    offsetY = mouseY - block.y;
   }
 }
 
 function mouseDragged() {
-  if (dragging) {
-    block.x = mouseX + offsetX;
-    block.y = mouseY + offsetY;
+  if (isDragging) {
+    block.x = mouseX - offsetX;
+    block.y = mouseY - offsetY;
   }
 }
 
 function mouseReleased() {
-  dragging = false;
+  isDragging = false;
 }
 
+// Touch events
 function touchStarted() {
-  if (block.isHovered(touchX, touchY)) {
-    dragging = true;
-    offsetX = block.x - touchX;
-    offsetY = block.y - touchY;
+  if (touches.length > 0 && touches[0].x > block.x && touches[0].x < block.x + block.w && touches[0].y > block.y && touches[0].y < block.y + block.h) {
+    isDragging = true;
+    offsetX = touches[0].x - block.x;
+    offsetY = touches[0].y - block.y;
   }
-  return false;
+  return false; // Prevent default
 }
 
 function touchMoved() {
-  if (dragging) {
-    block.x = touchX + offsetX;
-    block.y = touchY + offsetY;
+  if (isDragging && touches.length > 0) {
+    block.x = touches[0].x - offsetX;
+    block.y = touches[0].y - offsetY;
   }
-  return false;
+  return false; // Prevent default
 }
 
 function touchEnded() {
-  dragging = false;
-  return false;
-}
-
-// Block class
-class Block {
-  constructor(x, y, w, h, r) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.r = r;
-  }
-
-  show() {
-    fill(180);
-    stroke(0);
-    rect(this.x, this.y, this.w, this.h, this.r);
-  }
-
-  isHovered(px, py) {
-    return px > this.x && px < this.x + this.w && py > this.y && py < this.y + this.h;
-  }
+  isDragging = false;
+  return false; // Prevent default
 }
